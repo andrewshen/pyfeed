@@ -6,16 +6,18 @@ A simple command line script that lets you keep track of site updates
 
 ### First-party modules
 
-- os
-- argparse
-- requests
+- `os`
+- `argparse`
 
 ### Third-party modules
 
-- beautifulsoup4
-- validators
-- slugify
+- `requests`
+- `beautifulsoup4`
+- `validators`
+- `slugify`
 
 ## Usage
 
-Add a site `example.com` to your watchlist with `pyfeed.py -a example.com`. Run `pyfeed.py` to check for site updates since the last run. If a site on your watchlist has been updated, it will appear in the output.
+First, make sure you've installed all the third-party modules with `pip install -r requirements.txt`.
+
+Add a site `example.com` to your watchlist with `python3 pyfeed.py -a example.com`. Run `python3 pyfeed.py` to check for site updates since the last run. If a site on your watchlist has been updated, it will appear in the output.
