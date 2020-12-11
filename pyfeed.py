@@ -75,7 +75,7 @@ def load_site_data(filename):
     """
     html = ""
     with open(filename) as f:
-        f.readline()
+        f.readline()  # Skip first line
         for line in f:
             html += line
     return html
@@ -150,6 +150,7 @@ def print_updated_sites():
     directory = os.fsencode(".sitedata")
     updated_sites = set()
 
+    # Iterate through files in .sitedata
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         if filename.endswith(".txt"):
@@ -157,6 +158,7 @@ def print_updated_sites():
             if compare_site_data(path):
                 updated_sites.add(extract_url(path))
 
+    # Output relevant info
     if len(updated_sites) > 0:
         for site in updated_sites:
             print(site)
