@@ -4,7 +4,7 @@ import validators  # for validating urls
 from slugify import slugify  # processing urls
 from urllib.parse import urlparse  # parsing urls
 from bs4 import BeautifulSoup  # parsing html
-import requests
+import requests  # for making HTTP requests
 
 
 def build_parser():
@@ -19,10 +19,10 @@ def build_parser():
     """
     parser = argparse.ArgumentParser(
         description="Displays sites that have been updated")
-    parser.add_argument('-a', metavar="url", help="Add new site to pyfeed")
+    parser.add_argument("-a", metavar="url", help="Add new site to pyfeed")
 
-    if not os.path.exists('.sitedata'):
-        os.makedirs('.sitedata')
+    if not os.path.exists(".sitedata"):
+        os.makedirs(".sitedata")
 
     return parser
 
@@ -74,7 +74,10 @@ def load_site_data(filename):
     Returns:
         html (str): the text of the website
     """
-    pass
+    f = open(filename, "r")
+    html = f.readlines()[1:]
+    f.close()
+    return html
 
 
 def fetch_site_data(filename):
@@ -87,15 +90,21 @@ def fetch_site_data(filename):
     Returns:
         html (str): the text of the website
     """
-    pass
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+    }
+    req = requests.get(extract_url(filename))
+    soup = BeautifulSoup(req.text, "html.parser")
+    return soup.prettify()
 
 
-def update_site_data(filename):
+def update_site_data(filename, new_data):
     """
     Updates site data with new html
 
     Args:
         filename (str): the file to be updated
+        new_data (str): the updated html data
 
     Returns:
         None
@@ -103,17 +112,20 @@ def update_site_data(filename):
     pass
 
 
-def compare_site_data(url):
+def compare_site_data(filename):
     """
     Compares site data
 
     Args:
-        site (str): the website to be checked for updates
+        filename (str): the file to check against updates
 
     Returns:
         did_update (boolean): whether the site has been updated or not
     """
-    pass
+    existing_data = load_site_data(filename)
+    new_data = fetch_site_data(filename)
+    update_site_data(filename, new_data)
+    return existing_data != new_data
 
 
 def print_updated_sites():
@@ -128,15 +140,14 @@ def print_updated_sites():
     """
 
     directory = os.fsencode(".sitedata")
-    updated_sites = {}
+    updated_sites = set()
 
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         if filename.endswith(".txt"):
-            existing_data = load_site_data(filename)
-            new_data = fetch_site_data(filename)
-            # TODO: add comparator
-            update_site_data(filename)
+            path = ".sitedata/" + filename
+            if compare_site_data(path):
+                updated_sites.add(extract_url(path))
 
     for site in updated_sites:
         print(site)
@@ -152,7 +163,6 @@ def main():
     # Parse command line arguments
     new_site = parser.parse_args().a
 
-    # Load data from url and then print the data
     if new_site:
         add_new_site(new_site)
     else:
