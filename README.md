@@ -14,7 +14,7 @@ A simple command line script that helps you keep track of site updates.
 - `requests`
 - `beautifulsoup4`
 - `validators`
-- `slugify`
+- `python-slugify`
 
 ## Usage
 
