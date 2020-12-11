@@ -56,17 +56,17 @@ def load_site_data(filename):
         filename (str): the file to be referenced
 
     Returns:
-        None
+        html (str): the text of the website
     """
     pass
 
 
-def fetch_site_data(url):
+def fetch_site_data(filename):
     """
-    Fetches the site data
+    Fetches new site data from file using beautifulsoup
 
     Args:
-        url (str): the website to be fetched
+        filename (str): the file to be referenced
 
     Returns:
         html (str): the text of the website
@@ -112,11 +112,13 @@ def print_updated_sites():
     """
 
     directory = os.fsencode(".sitedata")
+    updated_sites = {}
 
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         if filename.endswith(".txt"):
-            # print(os.path.join(directory, filename))
+            existing_data = load_site_data(filename)
+            new_data = fetch_site_data(filename)
             continue
 
 
