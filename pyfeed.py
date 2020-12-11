@@ -4,6 +4,7 @@ import validators  # for validating urls
 from slugify import slugify  # processing urls
 from urllib.parse import urlparse  # parsing urls
 from bs4 import BeautifulSoup  # parsing html
+import requests
 
 
 def build_parser():
@@ -48,6 +49,21 @@ def add_new_site(url):
         print("Please enter a valid URL")
 
 
+def extract_url(filename):
+    """
+    Extract URL from file
+
+    Args:
+        filename (str): the file to get the URL from
+
+    Returns:
+        url (str): the corresponding url
+    """
+    with open(filename) as f:
+        url = f.readline()
+    return url
+
+
 def load_site_data(filename):
     """
     Fetches site data from file
@@ -74,12 +90,12 @@ def fetch_site_data(filename):
     pass
 
 
-def update_site_data(url):
+def update_site_data(filename):
     """
     Updates site data with new html
 
     Args:
-        url (str): the website to be updated
+        filename (str): the file to be updated
 
     Returns:
         None
@@ -119,7 +135,11 @@ def print_updated_sites():
         if filename.endswith(".txt"):
             existing_data = load_site_data(filename)
             new_data = fetch_site_data(filename)
-            continue
+            # TODO: add comparator
+            update_site_data(filename)
+
+    for site in updated_sites:
+        print(site)
 
 
 def main():
