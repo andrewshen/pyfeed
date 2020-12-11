@@ -4,12 +4,12 @@ A simple command line script that lets you keep track of site updates
 
 ## Dependencies
 
-### First-party modules
+**First-party modules**
 
 - `os`
 - `argparse`
 
-### Third-party modules
+**Third-party modules**
 
 - `requests`
 - `beautifulsoup4`
