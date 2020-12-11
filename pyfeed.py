@@ -1,9 +1,9 @@
 import os  # for storing site data
 import argparse  # for parsing arguments
+import requests  # for making HTTP requests
+from bs4 import BeautifulSoup  # parsing html
 import validators  # for validating urls
 from slugify import slugify  # processing urls
-from bs4 import BeautifulSoup  # parsing html
-import requests  # for making HTTP requests
 
 
 def build_parser():
@@ -157,8 +157,11 @@ def print_updated_sites():
             if compare_site_data(path):
                 updated_sites.add(extract_url(path))
 
-    for site in updated_sites:
-        print(site)
+    if len(updated_sites) > 0:
+        for site in updated_sites:
+            print(site)
+    else:
+        print("No sites have been updated.")
 
 
 def main():
