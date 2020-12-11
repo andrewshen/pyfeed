@@ -1,4 +1,4 @@
 requests
 beautifulsoup4
 validators
-slugify
+python-slugify
