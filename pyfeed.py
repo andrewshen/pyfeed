@@ -59,7 +59,7 @@ def extract_url(filename):
         url (str): the corresponding url
     """
     with open(filename) as f:
-        url = f.readline()
+        url = f.readline().strip()
     return url
 
 
@@ -73,9 +73,11 @@ def load_site_data(filename):
     Returns:
         html (str): the text of the website
     """
-    f = open(filename, "r")
-    html = f.readlines()[1:]
-    f.close()
+    html = ""
+    with open(filename) as f:
+        f.readline()
+        for line in f:
+            html += line
     return html
 
 
@@ -90,6 +92,10 @@ def fetch_site_data(filename):
         html (str): the text of the website
     """
     headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "3600",
         "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
     }
     req = requests.get(extract_url(filename))
@@ -152,7 +158,7 @@ def print_updated_sites():
                 updated_sites.add(extract_url(path))
 
     for site in updated_sites:
-        print(site.strip())
+        print(site)
 
 
 def main():
