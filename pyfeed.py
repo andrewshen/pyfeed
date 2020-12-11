@@ -2,7 +2,6 @@ import os  # for storing site data
 import argparse  # for parsing arguments
 import validators  # for validating urls
 from slugify import slugify  # processing urls
-from urllib.parse import urlparse  # parsing urls
 from bs4 import BeautifulSoup  # parsing html
 import requests  # for making HTTP requests
 
@@ -109,7 +108,10 @@ def update_site_data(filename, new_data):
     Returns:
         None
     """
-    pass
+    url = extract_url(filename)
+    with open(filename, "w") as f:
+        f.write(url + "\n")
+        f.write(new_data)
 
 
 def compare_site_data(filename):
@@ -150,7 +152,7 @@ def print_updated_sites():
                 updated_sites.add(extract_url(path))
 
     for site in updated_sites:
-        print(site)
+        print(site.strip())
 
 
 def main():
